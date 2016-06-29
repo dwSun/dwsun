@@ -5,7 +5,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from qrcode import app as qr
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "KeepThisS3cr3t"
+app.config["SECRET_KEY"] = "6169d7cc-3e0b-11e6-b736-90004ed04be2"
 
 dtoolb = DebugToolbarExtension(app)
 
