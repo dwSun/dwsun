@@ -1,0 +1,46 @@
+<div class="uk-flex uk-flex-column	uk-form ">
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.qrcode/1.0/jquery.qrcode.min.js"></script>
+    <script>
+        function generate() {
+            clr();
+            $('#output').qrcode(toUtf8($('#text').val()));
+        }
+
+        function clr() {
+            $('#output').text('');
+        }
+
+        function toUtf8(str) {
+            var out, i, len, c;
+            out = "";
+            len = str.length;
+            for (i = 0; i < len; i++) {
+                c = str.charCodeAt(i);
+                if ((c >= 0x0001) && (c <= 0x007F)) {
+                    out += str.charAt(i);
+                } else if (c > 0x07FF) {
+                    out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+                    out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+                    out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+                } else {
+                    out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+                    out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+                }
+            }
+            return out;
+        }
+    </script>
+    <textarea class='uk-responsive-width uk-responsive-height' data-uk-grid-match="{target:'#generate'}" id='text' placeholder="Text here"></textarea>
+    <div>
+        <div class="uk-flex uk-margin-top uk-margin-bottom uk-flex-space-around">
+            <div class='uk-button' id='generate' onclick="generate()">Generate</div>
+            <div class='uk-button' id='clr' onclick="clr()">
+                Clear
+            </div>
+        </div>
+    </div>
+    <div class='uk-panel uk-align-center'>
+        <div id="output"></div>
+    </div>
+
+</div>

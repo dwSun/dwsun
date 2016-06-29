@@ -1,10 +1,10 @@
 from setuptools import setup
 
-setup(name='YourAppName',
+setup(name='dwsun',
       version='1.0',
-      description='OpenShift App',
-      author='Your Name',
-      author_email='example@example.com',
-      url='http://www.python.org/sigs/distutils-sig/',
+      description='dwsun Pensonal WebSite App',
+      author='dwSun',
+      author_email='tonghuren@icloud.com',
+      url='http://www.dwsun.cn',
 #      install_requires=['Django>=1.3'],
      )

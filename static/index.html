@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <title>dwSun</title>
+    <!--
+    <link rel="stylesheet" type="text/css" href="/static/uikit/css/uikit.almost-flat.css">
+    <link rel="stylesheet" type="text/css" href="/static/uikit/css/components/sticky.almost-flat.css">
+    <link rel="stylesheet" type="text/css" href="/static/uikit/css/components/notify.almost-flat.css">
+    <link rel="stylesheet" type="text/css" href="/static/animate.css">
+    <script src="/static/jquery-2.2.4.js"></script>
+    <script src="/static/uikit/js/uikit.js"></script>
+    <script src="/static/uikit/js/components/sticky.js"></script>
+    <script src="/static/uikit/js/components/notify.js"></script>
+    <script src="/static/uikit/js/components/parallax.js"></script>
+    <script src="/static/vue.js"></script>
+    <script src="/static/vue-router.js"></script>
+-->
+
+
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.3/css/uikit.almost-flat.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.3/css/components/sticky.almost-flat.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.3/css/components/notify.almost-flat.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.3/js/uikit.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.3/js/components/sticky.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.3/js/components/notify.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/uikit/2.26.3/js/components/parallax.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.25/vue.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue-router/0.7.13/vue-router.min.js"></script>
+
+</head>
+
+<body id="app">
+    <div class="uk-container uk-container-center uk-margin-top">
+        <div id="offcanvas" class="uk-offcanvas">
+            <div class="uk-offcanvas-bar">
+                <ul class="uk-nav uk-nav-offcanvas">
+                    <li><a v-link="{ path: '/qrcode' }">Qrcode</a></li>
+                </ul>
+            </div>
+        </div>
+        <nav class="uk-navbar" data-uk-sticky="{ top:-100, animation:'uk-animation-fade'}">
+            <a href="#" class="uk-navbar-brand uk-hidden-touch">dwSun</a>
+            <ul class="uk-navbar-nav uk-hidden-touch">
+                <li><a v-link="{ path: '/qrcode' }">Qrcode</a></li>
+            </ul>
+            <div class="uk-navbar-flip">
+                <ul class="uk-navbar-nav">
+                    <li> <a>In</a> </li>
+                    <li class="uk-parent" data-uk-dropdown>
+                        <a>Out</a>
+                        <div class="uk-dropdown">
+                            <ul class="uk-nav uk-nav-navbar">
+                                <li><a>Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <a href="#offcanvas" class="uk-navbar-toggle uk-hidden-notouch " data-uk-offcanvas>菜单</a>
+            <a href="#" class="uk-navbar-brand uk-navbar-center uk-hidden-notouch ">dwSun</a>
+        </nav>
+        <hr />
+        <div class='uk-panel uk-panel-box'>
+            <router-view>
+            </router-view>
+        </div>
+    </div>
+    <template id='qrcode'>
+        <div class='uk-panel' id='qrcode_container'>Loading...</div>
+    </template>
+    <template id='def'>
+        <p>Welcome to <a href='dwsun.cn'>dwsun.cn</a></p>
+    </template>
+
+    <script>
+        // 定义组件
+        var Foo = Vue.extend({
+            template: '#foo',
+            data: function() {
+                return {
+                    message: "shit"
+                }
+            },
+            route: {
+                data: function(transition) {
+                    setTimeout(function() {
+                        transition.next({
+                            message: 'data fetched!'
+                        })
+                    }, 1000)
+                }
+            }
+        })
+
+        var Qrcode = Vue.extend({
+            template: '#qrcode',
+            route: {
+                data: function(transition) {
+                    setTimeout(function() {
+                        $('#qrcode_container').load('/qrcode');
+                        transition.next();
+                    }, 10)
+                }
+            }
+        })
+
+        var Def = Vue.extend({
+            template: '#def'
+        })
+
+        // 路由器需要一个根组件。
+        // 出于演示的目的，这里使用一个空的组件，直接使用 HTML 作为应用的模板
+        var App = Vue.extend({})
+
+        // 创建一个路由器实例
+        // 创建实例时可以传入配置参数进行定制，为保持简单，这里使用默认配置
+        var router = new VueRouter()
+        router.beforeEach(function(transition) {
+            console.log(transition);
+            transition.next();
+        })
+
+        // 定义路由规则
+        // 每条路由规则应该映射到一个组件。这里的“组件”可以是一个使用 Vue.extend
+        // 创建的组件构造函数，也可以是一个组件选项对象。
+        // 稍后我们会讲解嵌套路由
+        router.map({
+            '/foo': {
+                component: Foo
+            },
+            '/qrcode': {
+                component: Qrcode
+            },
+            '/': {
+                component: Def
+            }
+        })
+
+        router.on('/user/:userId', {
+            component: {
+                template: '<div>{{$route.params.userId}}</div>'
+            }
+        })
+
+        // 现在我们可以启动应用了！
+        // 路由器会创建一个 App 实例，并且挂载到选择符 #app 匹配的元素上。
+        router.start(App, '#app')
+    </script>
+</body>
+
+</html>
